@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  ADMIN
+  GURU
+  SISWA
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id         String     @id @default(cuid())
+  password   String
+  role       Role
+  status     UserStatus @default(ACTIVE)
+  lastLogin  DateTime?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  siswa     Siswa?
+  guru      Guru?
+  admin     Admin?
+}
+
+model Siswa {
+  id      String @id @default(cuid())
+  userId  String @unique
+  nis     String @unique
+  nama    String
+
+  kelasId String
+  kelas   Kelas @relation(fields: [kelasId], references: [id])
+
+  user    User @relation(fields: [userId], references: [id])
+}
+
+model Kelas {
+  id       String  @id @default(cuid())
+  jurusan  String
+  kelas    String
+
+  siswa    Siswa[]
+}
+
+model Guru {
+  id      String @id @default(cuid())
+  userId  String @unique
+  nip     String @unique
+  nama    String
+  prodi   String
+
+  user    User @relation(fields: [userId], references: [id])
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  userId   String @unique
+  username String @unique
+  nama     String
+
+  user     User @relation(fields: [userId], references: [id])
+}
