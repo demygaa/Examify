@@ -7,6 +7,7 @@ datasource db {
   provider = "mysql"
 }
 
+
 enum Role {
   ADMIN
   GURU
@@ -18,55 +19,210 @@ enum UserStatus {
   INACTIVE
 }
 
-model User {
-  id         String     @id @default(cuid())
-  password   String
-  role       Role
-  status     UserStatus @default(ACTIVE)
-  lastLogin  DateTime?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-
-  siswa     Siswa?
-  guru      Guru?
-  admin     Admin?
+enum JenisKaryawan {
+  GURU
+  STAFF
+  ADMIN
 }
 
+enum StatusSiswa {
+  AKTIF
+  LULUS
+  PINDAH
+  KELUAR
+}
+
+enum StatusLaporan {
+  PENDING
+  SELESAI
+  PROSES
+}
+
+enum KategoriLaporan {
+  AKUN
+  SERVER
+  SOAL
+}
+
+enum ActivityStatus {
+  SUCCESS
+  FAILED
+}
+
+
+
+
+model User {
+  id        String     @id @default(cuid())
+  username  String     @unique // siswa: NIS, guru/staff: NIP, admin: username
+  password  String
+  role      Role
+  status    UserStatus @default(ACTIVE)
+  lastLogin DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  siswa    Siswa?
+  karyawan Karyawan?
+  laporan  Laporan[] 
+}
+
+
 model Siswa {
-  id      String @id @default(cuid())
-  userId  String @unique
-  nis     String @unique
-  nama    String
+  id     String      @id @default(cuid())
+  userId String?     @unique
+  nis    String      @unique
+  nama   String
+  status StatusSiswa @default(AKTIF)
 
-  kelasId String
-  kelas   Kelas @relation(fields: [kelasId], references: [id])
+  user         User?        @relation(fields: [userId], references: [id])
+  riwayatKelas SiswaKelas[]
+}
 
-  user    User @relation(fields: [userId], references: [id])
+model Karyawan {
+  id     String        @id @default(cuid())
+  userId String?       @unique
+  nip    String?       @unique
+  nama   String
+  jenis  JenisKaryawan
+
+  user      User?       @relation(fields: [userId], references: [id])
+  mapel     GuruMapel[]
+  waliKelas WaliKelas?
+}
+
+model MataPelajaran {
+  id        String   @id @default(cuid())
+  kode      String   @unique
+  nama      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  guru GuruMapel[]
+}
+
+model GuruMapel {
+  karyawanId String
+  mapelId    String
+
+  karyawan Karyawan      @relation(fields: [karyawanId], references: [id])
+  mapel    MataPelajaran @relation(fields: [mapelId], references: [id])
+
+  @@id([karyawanId, mapelId])
+}
+
+model Jurusan {
+  id   String @id @default(cuid())
+  kode String @unique // RPL
+  nama String // Rekayasa Perangkat Lunak
+
+  kelas Kelas[]
 }
 
 model Kelas {
+  id        String @id @default(cuid())
+  tingkat   String // X, XI, XII
+  jurusanId String
+  kodeKelas String @unique // X-RPL-1
+
+  jurusan Jurusan      @relation(fields: [jurusanId], references: [id])
+  siswa   SiswaKelas[]
+  waliKelas WaliKelas?
+}
+
+model WaliKelas {
+  id         String   @id @default(cuid())
+  kelasId    String   @unique
+  karyawanId String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  kelas    Kelas    @relation(fields: [kelasId], references: [id], onDelete: Cascade)
+  karyawan Karyawan @relation(fields: [karyawanId], references: [id], onDelete: Restrict)
+}
+
+model TahunAjaran {
   id       String  @id @default(cuid())
-  jurusan  String
-  kelas    String
+  nama     String  @unique // 2025/2026
+  isActive Boolean @default(false)
 
-  siswa    Siswa[]
+  siswaKelas SiswaKelas[]
 }
 
-model Guru {
-  id      String @id @default(cuid())
-  userId  String @unique
-  nip     String @unique
-  nama    String
-  prodi   String
 
-  user    User @relation(fields: [userId], references: [id])
+
+model SiswaKelas {
+  id            String   @id @default(cuid())
+  siswaId       String
+  kelasId       String
+  tahunAjaranId String
+  createdAt     DateTime @default(now())
+
+  siswa       Siswa       @relation(fields: [siswaId], references: [id])
+  kelas       Kelas       @relation(fields: [kelasId], references: [id])
+  tahunAjaran TahunAjaran @relation(fields: [tahunAjaranId], references: [id])
+
+  @@unique([siswaId, tahunAjaranId])
+  @@index([kelasId, tahunAjaranId])
 }
 
-model Admin {
-  id       String @id @default(cuid())
-  userId   String @unique
-  username String @unique
-  nama     String
+model School {
+  id          String   @id @default("main")
+  name        String
+  npsn        String   @unique @db.VarChar(8)
+  logoUrl     String?  @db.MediumText
+  description String?  @db.Text
 
-  user     User @relation(fields: [userId], references: [id])
+  email       String?
+  phone       String?
+  website     String?
+
+  address     String?  @db.Text
+  city        String
+  province    String
+  postalCode  String?  @db.VarChar(5)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Laporan {
+  id        String          @id @default(cuid())
+  judul     String                          // Kolom "Laporan"
+  isi       String?         @db.Text        // Detail laporan
+  kategori  KategoriLaporan                 // Kolom "Kategori"
+  status    StatusLaporan   @default(PENDING)
+
+  userId    String                          // Kolom "Dikirim"
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime        @default(now()) // Kolom "Terkirim"
+  updatedAt DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model SystemSetting {
+  id              String   @id @default("main")
+  systemName      String   @default("Examify")
+  maintenanceMode Boolean  @default(false)
+  sessionTimeout  Int      @default(30) // menit
+  timezone        String   @default("WIB") // WIB | WITA | WIT
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityLog {
+  id          String         @id @default(cuid())
+  eventType   String
+  description String         @db.Text
+  status      ActivityStatus @default(SUCCESS)
+  actor       String?
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }

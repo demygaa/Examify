@@ -30,21 +30,21 @@ export default function CreateExam() {
         },
     ];
     return (
-        <div>
+        <div className="w-full min-w-0">
             <Link href={'/guru/banksoal'} className="flex flex-row gap-2 items-center">
-                 <ArrowLeft />
+                <ArrowLeft />
                 <p>Kembali</p>
             </Link>
-            <div className="justify-center items-center flex flex-col">
-                <div className="w-[70%]">
+
+            <div className="justify-center items-center flex flex-col mt-[20px]">
+                
+                <div className="w-full lg:w-[70%]">
                     <CustomizeExam />
                 </div>
 
-                <div className="flex flex-col gap-4 mt-[20px] w-[70%]">
-
-                    <p className="font-semibold">
-                        Daftar Soal
-                    </p>
+                
+                <div className="flex flex-col gap-4 mt-[20px] w-full lg:w-[70%]">
+                    <p className="font-semibold">Daftar Soal</p>
 
                     {questions.map((question, index) => (
                         <QuestionCard
@@ -57,10 +57,8 @@ export default function CreateExam() {
                     ))}
 
                     <AddQuestion />
-
                 </div>
             </div>
-
         </div>
     );
 }

@@ -20,7 +20,7 @@ export default function RecentReports() {
         
     ];
     return (
-        <div className="bg-white w-[350px] border border-slate-300 shadow-sm rounded-xl">
+        <div className="bg-white w-full border border-slate-300 shadow-sm rounded-xl">
             <div className="flex justify-between items-center border-b border-slate-300 p-[10px]">
                 <p className="text-[20px] font-semibold">Aktivitas</p>
                 <button className="text-blue-700 font-semibold text-[15px]">Lihat Semua</button>

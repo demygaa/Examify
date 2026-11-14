@@ -8,7 +8,7 @@ export default function PageNotDone() {
         <div>
             <NotDoneHeader />
 
-            <div className="flex flex-row gap-[30px] mb-[30px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-[30px] mb-6 lg:mb-[30px]">
                 <StatisticCard
                     title="Total belum dikerjakan"
                     value="04"

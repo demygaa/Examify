@@ -59,12 +59,12 @@ const stats = [
 
 export default function RiwayatUjianPage() {
     return (
-        <div className="min-h-screen bg-[#F7F8FC] px-6 py-5 rounded-xl">
+        <div className="min-h-screen w-full min-w-0 bg-[#F7F8FC] px-3 py-4 sm:px-6 sm:py-5 rounded-xl">
 
             {/* HEADER */}
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         <h1 className="text-sm font-medium text-slate-800">
                             Detail Riwayat Ujian
                         </h1>
@@ -81,8 +81,8 @@ export default function RiwayatUjianPage() {
                 </div>
 
                 {/* EXPORT */}
-                <div className="flex gap-2">
-                    <button className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50">
+                <div className="flex flex-wrap gap-2">
+                    <button className="flex items-center gap-2  whitespace-nowrap rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50">
                         <FileDown size={15} />
                         Export PDF
                     </button>
@@ -95,7 +95,7 @@ export default function RiwayatUjianPage() {
             </div>
 
             {/* DETAIL UJIAN */}
-            <div className="mt-6 grid grid-cols-4 gap-6 rounded-2xl border border-slate-100 bg-white px-5 py-5 shadow-sm">
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 rounded-2xl border border-slate-100 bg-white px-5 py-5 shadow-sm">
 
                 <InfoItem
                     title="NAMA UJIAN"
@@ -125,7 +125,7 @@ export default function RiwayatUjianPage() {
             </div>
 
             {/* STATISTICS */}
-            <div className="mt-6 grid grid-cols-6 gap-3">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                 {stats.map((stat, index) => {
                     const Icon = stat.icon;
 
@@ -171,7 +171,7 @@ export default function RiwayatUjianPage() {
             </div>
 
             {/* CONTENT */}
-            <div className="mt-6 grid grid-cols-[2fr_1fr] gap-5">
+            <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-[2fr_1fr]">
 
                 {/* DISTRIBUSI NILAI */}
                 <div className="min-h-[350px] rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">

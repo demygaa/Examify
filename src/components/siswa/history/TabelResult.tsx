@@ -70,7 +70,7 @@ export default function ExamHistoryTable({ exams }: Props) {
 
 
     return (
-        <div className="mt-[30px] overflow-hidden rounded-xl border border-slate-300 bg-white">
+        <div className="mt-6 lg:mt-[30px] overflow-x-auto rounded-xl border border-slate-300 bg-white">
 
            
             <ExamHistoryFilter
@@ -94,28 +94,28 @@ export default function ExamHistoryTable({ exams }: Props) {
 
 
         
-            <table className="w-full">
+            <table className="w-full min-w-[500px] sm:min-w-[600px]">
 
                 <thead>
-                    <tr className="bg-slate-50 text-black">
+                        <tr className="bg-slate-50 text-black">
 
-                        <th className="px-5 py-4 text-left">
-                            JUDUL UJIAN
-                        </th>
+                            <th className="px-3 sm:px-5 py-2.5 sm:py-4 text-left text-xs sm:text-sm">
+                                JUDUL UJIAN
+                            </th>
 
-                        <th className="px-5 py-4 text-left">
-                            SUBJEK
-                        </th>
+                            <th className="px-2 sm:px-5 py-2.5 sm:py-4 text-left text-xs sm:text-sm">
+                                SUBJEK
+                            </th>
 
-                        <th className="px-5 py-4 text-left">
-                            TANGGAL
-                        </th>
+                            <th className="px-2 sm:px-5 py-2.5 sm:py-4 text-left text-xs sm:text-sm">
+                                TANGGAL
+                            </th>
 
-                        <th className="px-5 py-4 text-left">
-                            STATUS
-                        </th>
+                            <th className="px-2 sm:px-5 py-2.5 sm:py-4 text-left text-xs sm:text-sm">
+                                STATUS
+                            </th>
 
-                    </tr>
+                        </tr>
                 </thead>
 
 
@@ -129,34 +129,34 @@ export default function ExamHistoryTable({ exams }: Props) {
                             className="border-t border-slate-200 text-black"
                         >
 
-                            <td className="px-5 py-4">
+                            <td className="px-3 sm:px-5 py-3 sm:py-4">
 
-                                <p className="font-bold">
+                                <p className="font-bold text-sm sm:text-base line-clamp-2">
                                     {exam.judul}
                                 </p>
 
-                                <p className="text-sm text-slate-500">
+                                <p className="text-xs sm:text-sm text-slate-500">
                                     ID: EX-{exam.id}
                                 </p>
 
                             </td>
 
 
-                            <td>
+                            <td className="px-2">
 
-                                <p className="w-fit rounded-full bg-blue-200 px-2 py-2 font-semibold text-blue-700">
+                                <p className="w-fit rounded-full bg-blue-200 px-2 py-1 sm:py-2 text-xs sm:text-sm font-semibold text-blue-700">
                                     {exam.mapel}
                                 </p>
 
                             </td>
 
 
-                            <td className="px-5 py-4">
+                            <td className="px-2 sm:px-5 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap">
                                 {exam.tanggal}
                             </td>
 
 
-                            <td className="px-5 py-4">
+                            <td className="px-2 sm:px-5 py-3 sm:py-4 text-xs sm:text-sm">
                                 {exam.status}
                             </td>
 

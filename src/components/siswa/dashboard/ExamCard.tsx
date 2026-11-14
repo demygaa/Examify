@@ -20,7 +20,7 @@ export default function ExamCard({
     timer,
 }: ExamCardProps) {
     return (
-        <div className="bg-white border border-slate-200 w-[346px] h-[287px] p-[15px] rounded-xl">
+        <div className="bg-white border border-slate-200 w-full h-[287px] p-[15px] rounded-xl">
             
           
             <div className="flex w-full justify-between items-center">
@@ -57,7 +57,7 @@ export default function ExamCard({
          
             <Link
                 href={`/siswa/ujian/${id}`}
-                className="mt-12 flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                className="mt-8 sm:mt-10 lg:mt-12 flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 sm:py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
             >
                 Mulai Ujian
             </Link>

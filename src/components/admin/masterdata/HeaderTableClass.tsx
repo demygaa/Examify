@@ -1,21 +1,35 @@
 "use client";
 
-import { Search, SlidersHorizontal, RotateCcw } from "lucide-react";
+import { Search, RotateCcw } from "lucide-react";
 
 type ClassTableHeaderProps = {
     search: string;
     onSearchChange: (value: string) => void;
+    tingkat: string;
+    onTingkatChange: (value: string) => void;
+    jurusan: string;
+    onJurusanChange: (value: string) => void;
+    tingkatOptions: string[];
+    jurusanOptions: string[];
+    onReset: () => void;
 };
 
 export default function ClassTableHeader({
     search,
     onSearchChange,
+    tingkat,
+    onTingkatChange,
+    jurusan,
+    onJurusanChange,
+    tingkatOptions,
+    jurusanOptions,
+    onReset,
 }: ClassTableHeaderProps) {
     return (
-        <div className="flex items-center justify-between border-b border-slate-200 p-3">
+        <div className="flex flex-col gap-3 border-b border-slate-200 p-3 sm:flex-row sm:items-center sm:justify-between">
 
             {/* Search */}
-            <div className="relative w-[270px]">
+            <div className="relative w-full sm:w-[270px]">
                 <Search
                     size={16}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
@@ -31,22 +45,39 @@ export default function ClassTableHeader({
             </div>
 
             {/* Filter */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
 
-                <button className="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                    All Statuses
-                </button>
+                <select
+                    value={tingkat}
+                    onChange={(e) => onTingkatChange(e.target.value)}
+                    className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none"
+                >
+                    <option value="">All Grades</option>
+                    {tingkatOptions.map((option) => (
+                        <option key={option} value={option}>
+                            {option}
+                        </option>
+                    ))}
+                </select>
 
-                <button className="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                    All Grades
-                </button>
+                <select
+                    value={jurusan}
+                    onChange={(e) => onJurusanChange(e.target.value)}
+                    className="max-w-[200px] rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none"
+                >
+                    <option value="">All Majors</option>
+                    {jurusanOptions.map((option) => (
+                        <option key={option} value={option}>
+                            {option}
+                        </option>
+                    ))}
+                </select>
 
-                <button className="flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                    <SlidersHorizontal size={15} />
-                    Filter
-                </button>
-
-                <button className="flex items-center gap-1 px-2 py-2 text-sm">
+                <button
+                    type="button"
+                    onClick={onReset}
+                    className="flex items-center gap-1 px-2 py-2 text-sm"
+                >
                     <RotateCcw size={14} />
                     Reset
                 </button>

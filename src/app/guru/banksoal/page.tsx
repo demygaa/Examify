@@ -1,40 +1,44 @@
 import CardLibrary from "@/src/components/guru/banksoal/Card";
-import CardSoal from "@/src/components/guru/banksoal/CardSoal";
+import BankSoalContent from "@/src/components/guru/banksoal/BankSoalContent";
 import Link from "next/link";
 import HeaderGuru from "@/src/components/guru/HeaderGuru";
 import { Archive, CheckCircle2, ListPlus } from "lucide-react";
-import SearchCard from "@/src/components/guru/banksoal/Search";
 import FastResume from "@/src/components/guru/banksoal/Resume";
 import LastActivity from "@/src/components/guru/banksoal/LastActivity";
 
 
 export default function BankSoalPage() {
+    const guruMapel = [
+        "Matematika",
+        "Informatika",
+        "Bahasa Indonesia",
+    ]
     const examscard = [
         {
             id: "2",
             mapel: "Matematika",
-            judul: "Ujian Matematikan Aljabar",
+            judul: "Ujian Matematika Aljabar",
             soal: "Tentukan nilai x yang memenuhi persamaan kuadrat $2x^2 - 4x + 6 = 0$ menggunakan rumus ABC dan berikan penjelasan mengenai determinannya...",
             value: "89",
-            recent: "2009 08 13",
+            recent: "2026-08-13",
 
         },
         {
             id: "3",
-            mapel: "Matematika",
-            judul: "Ujian Matematikan Aljabar",
-            soal: "Tentukan nilai x yang memenuhi persamaan kuadrat $2x^2 - 4x + 6 = 0$ menggunakan rumus ABC dan berikan penjelasan mengenai determinannya...",
-            value: "89",
-            recent: "2009 08 13",
+            mapel: "Informatika",
+            judul: "Ujian Informatika Algoritma",
+            soal: "Analisis pseudocode pencarian linear dan tentukan elemen yang ditemukan pertama kali jika target pencarian adalah nilai 42...",
+            value: "64",
+            recent: "2026-09-01",
 
         },
         {
             id: "4",
-            mapel: "Matematika",
-            judul: "Ujian Matematikan Aljabar",
-            soal: "Tentukan nilai x yang memenuhi persamaan kuadrat $2x^2 - 4x + 6 = 0$ menggunakan rumus ABC dan berikan penjelasan mengenai determinannya...",
-            value: "89",
-            recent: "2009 08 13",
+            mapel: "Bahasa Indonesia",
+            judul: "Ujian Bahasa Indonesia Teks Eksposisi",
+            soal: "Identifikasi gagasan utama dan struktur teks eksposisi pada kutipan bacaan berikut, lalu jelaskan alasan pemilihan gagasan tersebut...",
+            value: "41",
+            recent: "2026-07-20",
 
         }
     ]
@@ -91,23 +95,9 @@ export default function BankSoalPage() {
                             }}
                         />
                     </div>
-                    <SearchCard />
-                    <div className="flex flex-col gap-4">
-                        {examscard.map((examcd) => (
-                            <CardSoal
-                                key={examcd.id}
-                                id={examcd.id}
-                                mapel={examcd.mapel}
-                                judul={examcd.judul}
-                                soal={examcd.soal}
-                                value={examcd.value}
-                                recent={examcd.recent}
-                            />
-                        ))}
-
-                    </div>
+                    <BankSoalContent items={examscard} mapelOptions={guruMapel} />
                 </div>
-                <div className="w-[300px] shrink-0 ml-[20px] sticky top-[20px]">
+                <div className="hidden lg:block w-[300px] shrink-0 ml-[20px] sticky top-[20px]">
                     {fastresume.map((resume) => (
                         <FastResume 
                            key={resume.peserta}

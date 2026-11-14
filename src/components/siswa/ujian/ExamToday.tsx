@@ -16,23 +16,24 @@ export default function ExamToday({
     title
 }: ExamTodayProps) {
     return (
-        <div className="bg-blue-500 w-full h-[180px] p-[27px] mt-[30px] rounded-xl flex ">
+        <div className="bg-blue-500 w-full h-[160px] sm:h-[180px] p-4 sm:p-[27px] mt-4 lg:mt-[30px] rounded-xl flex ">
             <div className="flex flex-col justify-between">
                 <p
-                    className="text-white font-sm text-slate-200"
+                    className="text-white text-sm sm:text-base text-slate-200"
                 >
                     {title}
                 </p>
 
                 <p
-                    className="text-[35px] text-white font-bold"
+                    className="text-3xl sm:text-[35px] text-white font-bold"
                 >
                     {jumlah}
                 </p>
 
-                <div className="flex font-sm text-white gap-2">
-                    <Clock size={20}
+                <div className="flex text-xs sm:text-sm text-white gap-1.5 sm:gap-2 items-center flex-wrap">
+                    <Clock size={18}
                         color="white"
+                        className="sm:w-5 sm:h-5"
                     />
                     <p>Selanjutnya : {nextMapel} waktu {time}</p>
 

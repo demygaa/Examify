@@ -45,7 +45,7 @@ export default function HistoryPageGuru() {
                 name="Ahmad"
                 prodi="Matematika"
             />
-            <div className="mt-[20px] flex flex-row gap-[20px]">
+            <div className="mt-4 lg:mt-[20px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-[20px] w-full">
                 <CardStatisticResult
                     title="TOTAL UJIAN SELESAI"
                     icon={CheckCircle}
@@ -68,10 +68,10 @@ export default function HistoryPageGuru() {
                     value="100"
                 />
             </div>
-            <div className="mt-[20px]">
+            <div className="mt-4 lg:mt-[20px]">
                 <SearchCard />
             </div>
-            <div className="mt-[20px] grid grid-cols-4 gap-[20px] w-full">
+            <div className="mt-4 lg:mt-[20px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-[20px] w-full">
                 {examResults.map((exam) => (
                     <CardExamResult
                         key={exam.id}

@@ -3,32 +3,32 @@ import { GraduationCapIcon } from "lucide-react";
 
 export default function HeaderUjian() {
     return (
-        <header className="flex items-center justify-between mb-[30px]">
+        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 lg:mb-[30px] gap-4">
             {/* Bagian kiri */}
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
                     Daftar Ujian
                 </h1>
 
-                <p className="mt-1 text-[15px] text-slate-500">
+                <p className="mt-1 text-sm sm:text-[15px] text-slate-500">
                     Ikuti ujian yang tersedia
                 </p>
             </div>
 
             {/* Bagian kanan */}
-            <div className="flex items-center gap-3">
-                <div className="text-right">
-                    <p className="text-[20px] font-semibold text-slate-900">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="text-left sm:text-right flex-1 sm:flex-none">
+                    <p className="text-base sm:text-[18px] lg:text-[20px] font-semibold text-slate-900">
                         Dimas Prayoga
                     </p>
 
-                    <p className="text-[15px] text-slate-500">
+                    <p className="text-sm sm:text-[15px] text-slate-500">
                         XI RPL 1
                     </p>
                 </div>
 
-                <div className="flex items-center justify-center relative h-[60px] w-[60px] overflow-hidden rounded-full border border-slate-200">
-                   <GraduationCapIcon size={40}
+                <div className="flex items-center justify-center relative h-[50px] w-[50px] sm:h-[55px] sm:w-[55px] lg:h-[60px] lg:w-[60px] overflow-hidden rounded-full border border-slate-200 flex-shrink-0">
+                   <GraduationCapIcon size={35}
                     color="blue"
                    />
                 </div>

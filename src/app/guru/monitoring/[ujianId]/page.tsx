@@ -64,11 +64,11 @@ export default async function MonitoringDetail({ params }: Props) {
                 soal={card?.soal}
             />
 
-            <div className="flex flex-row gap-[20px] mt-[20px]">
+            <div className="flex flex-col lg:flex-row gap-[20px] mt-[20px]">
 
-                <div className="w-full flex flex-col gap-[20px]">
+                <div className="w-full min-w-0 flex flex-col gap-[20px]">
 
-                    <div className="flex flex-row gap-[20px] w-full">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-[12px] sm:gap-[20px] w-full">
                         <CardStatisticMonitoring
                             judul="Total Peserta"
                             value="35"
@@ -92,21 +92,21 @@ export default async function MonitoringDetail({ params }: Props) {
 
                     <FastActionMon />
 
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-300">
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden">
 
                         <HeaderTableMon />
 
-                        <TableMon
-                            data={pesertaUjian}
-                        />
+                        <div className="overflow-x-auto">
+                            <TableMon data={pesertaUjian} />
+                        </div>
 
-                    
+
 
                     </div>
 
                 </div>
 
-                <div>
+                <div className="w-full lg:w-[300px] lg:shrink-0">
                     <RecentReports />
                 </div>
 

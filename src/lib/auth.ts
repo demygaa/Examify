@@ -3,7 +3,7 @@ import jwt, { SignOptions } from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET ?? "examify-super-secret-key-change-me-in-production";
 const TOKEN_NAME = "examify_token";
-const TOKEN_MAX_AGE = 60 * 60 * 24 * 7; // 7 hari
+const TOKEN_MAX_AGE = 60 * 60 * 24 * 7; 
 
 export type Role = "ADMIN" | "GURU" | "SISWA";
 
@@ -18,7 +18,7 @@ export function hashPassword(password: string) {
 }
 
 export async function verifyPassword(password: string, stored: string) {
-    // Backward-compatible: akun lama menyimpan password plaintext
+    
     if (!stored.startsWith("$2")) {
         return password === stored;
     }

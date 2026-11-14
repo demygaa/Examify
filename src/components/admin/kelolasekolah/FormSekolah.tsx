@@ -1,4 +1,12 @@
+"use client";
+
+import { useSchoolForm, type SchoolData } from "./SchoolFormProvider";
+
 export default function SchoolContactForm() {
+    const { school, setField, schoolLevel } = useSchoolForm();
+
+    const field = (name: keyof SchoolData) => school?.[name] ?? "";
+
     return (
         <div className="rounded-lg border border-slate-300 p-[27px] w-full bg-white shadow-sm">
             <h2 className="text-sm font-semibold">
@@ -11,12 +19,16 @@ export default function SchoolContactForm() {
                 {/* School Name */}
                 <div>
                     <label className="mb-1 block text-xs">
-                    Nama Sekolah
+                        Nama Sekolah
                     </label>
 
                     <input
                         type="text"
-                        defaultValue="SMK Negeri 4 Malang"
+                        value={field("name")}
+                        onChange={(e) =>
+                            setField("name", e.target.value)
+                        }
+                        required
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     />
                 </div>
@@ -29,7 +41,10 @@ export default function SchoolContactForm() {
 
                     <input
                         type="text"
-                        defaultValue="20533678"
+                        value={field("npsn")}
+                        onChange={(e) => setField("npsn", e.target.value)}
+                        required
+                        maxLength={8}
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     />
                 </div>
@@ -42,7 +57,8 @@ export default function SchoolContactForm() {
 
                     <input
                         type="email"
-                        defaultValue="info@smkn4malang.sch.id"
+                        value={field("email")}
+                        onChange={(e) => setField("email", e.target.value)}
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     />
                 </div>
@@ -55,7 +71,8 @@ export default function SchoolContactForm() {
 
                     <input
                         type="text"
-                        defaultValue="+62 341 411082"
+                        value={field("phone")}
+                        onChange={(e) => setField("phone", e.target.value)}
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     />
                 </div>
@@ -68,7 +85,8 @@ export default function SchoolContactForm() {
 
                     <input
                         type="text"
-                        defaultValue="https://smkn4malang.sch.id"
+                        value={field("website")}
+                        onChange={(e) => setField("website", e.target.value)}
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     />
                 </div>
@@ -80,7 +98,10 @@ export default function SchoolContactForm() {
                     </label>
 
                     <textarea
-                        defaultValue="Jl. Tanimbar No.22, Kasin, Kec. Klojen"
+                        value={field("address")}
+                        onChange={(e) =>
+                            setField("address", e.target.value)
+                        }
                         rows={2}
                         className="w-full resize-none rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     />
@@ -94,7 +115,9 @@ export default function SchoolContactForm() {
 
                     <input
                         type="text"
-                        defaultValue="Malang"
+                        value={field("city")}
+                        onChange={(e) => setField("city", e.target.value)}
+                        required
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     />
                 </div>
@@ -106,12 +129,22 @@ export default function SchoolContactForm() {
                     </label>
 
                     <select
-                        defaultValue="Jawa Timur"
+                        value={field("province")}
+                        onChange={(e) =>
+                            setField("province", e.target.value)
+                        }
+                        required
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
                     >
                         <option>Jawa Timur</option>
                         <option>Jawa Tengah</option>
                         <option>Jawa Barat</option>
+                        <option>DKI Jakarta</option>
+                        <option>Banten</option>
+                        <option>Sumatera Utara</option>
+                        <option>Sumatera Barat</option>
+                        <option>Sumatera Selatan</option>
+                        <option>Bali</option>
                     </select>
                 </div>
 
@@ -123,8 +156,25 @@ export default function SchoolContactForm() {
 
                     <input
                         type="text"
-                        defaultValue="65117"
+                        value={field("postalCode")}
+                        onChange={(e) =>
+                            setField("postalCode", e.target.value)
+                        }
+                        maxLength={5}
                         className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-xs outline-none focus:border-blue-500"
+                    />
+                </div>
+
+                <div>
+                    <label className="mb-1 block text-xs">
+                        Tingkat Sekolah
+                    </label>
+
+                    <input
+                        type="text"
+                        value={schoolLevel}
+                        readOnly
+                        className="w-full rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-xs outline-none"
                     />
                 </div>
             </div>

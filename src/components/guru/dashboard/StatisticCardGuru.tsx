@@ -19,23 +19,21 @@ export default function StatisticCardGuru({
     
 }: StatisticCardGuruProps) {
     return (
-        <div className="flex flex-col bg-white p-[15px] w-full rounded-xl shadow-lg">
-            <div className={`flex items-center justify-between rounded-lg px-3 py-2`}>
-                <Icon size={40} 
+        <div className="flex flex-col bg-white p-3 sm:p-[15px] w-full rounded-xl shadow-lg">
+            <div className={`flex items-center justify-between rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 gap-2`}>
+                <Icon size={32} 
                     style={style}
-                    className="p-2 rounded-full"
-                    
+                    className="p-2 sm:p-2 rounded-full flex-shrink-0"
                 />
                 <p
-                    className="font-semibold p-2 rounded-xl text-[15px]"
+                    className="font-semibold px-2 py-1 rounded-xl text-xs sm:text-[15px] whitespace-nowrap"
                     style={style}
-
                 >{status}</p>
             </div>
 
-            <div className="text-black flex flex-col gap-2">
-                <p className="text-[15px] text-slate-400 font-semibold">{title}</p>
-                <p className="text-[20px] font-semibold">{value}</p>
+            <div className="text-black flex flex-col gap-1 sm:gap-2 mt-2">
+                <p className="text-xs sm:text-[15px] text-slate-400 font-semibold">{title}</p>
+                <p className="text-lg sm:text-[20px] font-semibold">{value}</p>
             </div>
 
         </div>

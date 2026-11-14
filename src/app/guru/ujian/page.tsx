@@ -61,7 +61,7 @@ export default function ExamPage() {
                 name="Ahmad"
                 prodi="Matematika"
             />
-            <div className="flex flex-row gap-[20px] w-full mt-[20px]">
+            <div  className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-[12px] sm:gap-[20px] w-full mt-[20px]">
                 <ExamPageCard
                     title="Total Ujian"
                     value="12"
@@ -87,7 +87,7 @@ export default function ExamPage() {
                 <SearchCard />
             </div>
             
-            <div className="grid grid-cols-2 gap-[20px] mt-[20px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mt-[20px]">
                 {examsdraft.map((exam) => (
                     <ExamStartCard
                         key={exam.id}

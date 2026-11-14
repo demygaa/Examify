@@ -1,37 +1,40 @@
 import Link from "next/link";
 
-export default function OverviewAccount() {
-    const accountData = [
-        {
-            id: 1,
-            title: "Active Students",
-            description: "1,210 active (38 inactive)",
-            percentage: "92%",
-            dot: "bg-blue-600",
-        },
-        {
-            id: 2,
-            title: "Active Teachers",
-            description: "84 active (2 inactive)",
-            percentage: "6%",
-            dot: "bg-blue-200",
-        },
-        {
-            id: 3,
-            title: "Administrators",
-            description: "4 active",
-            percentage: "2%",
-            dot: "bg-blue-100 border border-slate-300",
-        },
-    ];
+export type AccountOverviewItem = {
+    title: string;
+    active: number;
+    inactive: number;
+    percentage: number;
+};
+
+type OverviewAccountProps = {
+    total: number;
+    items: AccountOverviewItem[];
+};
+
+const DOT_CLASSES = [
+    "bg-blue-600",
+    "bg-blue-300",
+    "bg-blue-100 border border-slate-300",
+];
+
+function formatTotal(total: number): string {
+    if (total >= 1000) {
+        return `${(total / 1000).toFixed(1).replace(".0", "")}k`;
+    }
+
+    return String(total);
+}
+
+export default function OverviewAccount({
+    total,
+    items,
+}: OverviewAccountProps) {
     return (
         <div className="bg-white rounded-xl shadow-sm p-[27px] h-full">
-
             {/* Header */}
             <div className="flex flex-row justify-between">
-                <p className="font-semibold text-black">
-                    Account Overview
-                </p>
+                <p className="font-semibold text-black">Account Overview</p>
 
                 <Link
                     href="/admin/kelolaakun"
@@ -43,57 +46,52 @@ export default function OverviewAccount() {
 
             {/* Content */}
             <div className="flex flex-row items-center justify-center py-[115px] gap-[20px]">
-
                 <div className="flex h-[180px] w-[180px] flex-col items-center justify-center rounded-full border-8 border-slate-300">
-
                     <p className="text-black font-semibold text-[40px]">
-                        1.3k
+                        {formatTotal(total)}
                     </p>
 
-                    <p className="text-sm text-slate-500">
-                        Total Account
-                    </p>
-
+                    <p className="text-sm text-slate-500">Total Account</p>
                 </div>
 
                 <div>
                     {/* Account Statistics */}
                     <div className="mt-8 flex flex-col gap-7">
-
-                        {accountData.map((account) => (
+                        {items.map((item, index) => (
                             <div
-                                key={account.id}
+                                key={item.title}
                                 className="flex items-center gap-5"
                             >
                                 {/* Dot */}
                                 <div
-                                    className={`h-3 w-3 shrink-0 rounded-full ${account.dot}`}
+                                    className={`h-3 w-3 shrink-0 rounded-full ${
+                                        DOT_CLASSES[index] ?? DOT_CLASSES[0]
+                                    }`}
                                 />
 
                                 {/* Description */}
                                 <div className="flex-1">
                                     <p className="text-[20px] font-medium text-slate-900">
-                                        {account.title}
+                                        {item.title}
                                     </p>
 
                                     <p className="text-[15px] text-slate-500">
-                                        {account.description}
+                                        {item.active} aktif
+                                        {item.inactive > 0
+                                            ? ` (${item.inactive} nonaktif)`
+                                            : ""}
                                     </p>
                                 </div>
 
                                 {/* Percentage */}
                                 <p className="text-[20px] font-bold text-slate-900">
-                                    {account.percentage}
+                                    {item.percentage}%
                                 </p>
                             </div>
                         ))}
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     );
 }

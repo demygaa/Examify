@@ -25,7 +25,7 @@ export default function ExamifyCard({
     const isActive = status === "BERLANGSUNG"
 
     return (
-        <div className={`w-[348px] h-[351px] flex flex-col gap-2 bg-white mt-[30px] p-[27px] rounded-xl ${isActive
+        <div className={`w-full h-[351px] flex flex-col gap-2 bg-white mt-4 lg:mt-[30px] p-5 sm:p-[27px] rounded-xl ${isActive
             ? "border border-blue-400 "
             : "border border-slate-300"
             }`}>
@@ -64,7 +64,7 @@ export default function ExamifyCard({
                 </div>
             </div>
             <div>
-                <p className="text-[22px] font-semibold text-black">
+                <p className="text-lg sm:text-[22px] font-semibold text-black line-clamp-2">
                     {judul}
                 </p>
                 <div className="flex flex-row gap-2 mt-[5px] items-center">
@@ -85,7 +85,7 @@ export default function ExamifyCard({
                         />
                         <p className="text-black text-slate-700 font-semibold">DURASI</p>
                     </div>
-                    <p className="text-[20px] text-black font-bold">{timer}</p>
+                    <p className="text-lg sm:text-[20px] text-black font-bold">{timer}</p>
                 </div>
                 <div className="flex flex-col gap-2 w-1/2">
                     <div className="flex flex-row gap-2 mt-[12px]">
@@ -95,7 +95,7 @@ export default function ExamifyCard({
                         />
                         <p className="text-black text-slate-700 font-semibold">JADWAL</p>
                     </div>
-                    <p className="text-[20px] text-black font-bold">{schedule}</p>
+                    <p className="text-lg sm:text-[20px] text-black font-bold">{schedule}</p>
                 </div>
             </div>
             <div className="mt-auto">

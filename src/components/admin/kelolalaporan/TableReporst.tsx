@@ -1,20 +1,29 @@
-import { GraduationCap, ShieldCheck, User, MoreHorizontal } from "lucide-react"
+import {
+    Eye,
+    GraduationCap,
+    ShieldCheck,
+    User,
+} from "lucide-react";
+import { useState } from "react";
+import LaporanDetailDrawer from "@/src/components/admin/kelolalaporan/LaporanDetailDrawer";
 
 export type Reports = {
-    id: number;
-    laporan: string
-    dikirim: string
-    terkirim: string
-    status: "Pending" | "Proses" | "Selesai"
+    id: string;
+    laporan: string;
+    dikirim: string;
+    terkirim: string;
+    status: "Pending" | "Proses" | "Selesai";
     role: "Siswa" | "Guru" | "Admin";
-    kategori: "Akun" | "Ujian" | "Server"
-}
+    kategori: "Akun" | "Ujian" | "Server";
+};
 
 type Props = {
-    data: Reports[]
-}
+    data: Reports[];
+    onChanged?: () => void;
+};
 
-export default function TableReports({ data }: Props) {
+export default function TableReports({ data, onChanged }: Props) {
+    const [selectedId, setSelectedId] = useState<string | null>(null);
 
     return (
         <div className="overflow-x-auto px-[10px]">
@@ -37,14 +46,14 @@ export default function TableReports({ data }: Props) {
                                 ? GraduationCap
                                 : report.role === "Guru"
                                 ? User
-                                : ShieldCheck
+                                : ShieldCheck;
 
                         const Status =
                             report.status === "Pending"
                                 ? "rounded bg-orange-100 px-2 py-1 text-[9px] text-orange-700"
                                 : report.status === "Proses"
                                 ? "rounded bg-blue-100 px-2 py-1 text-[9px] text-blue-700"
-                                : "rounded bg-emerald-100 px-2 py-1 text-[9px] text-emerald-700"
+                                : "rounded bg-emerald-100 px-2 py-1 text-[9px] text-emerald-700";
 
                         return (
                             <tr
@@ -93,12 +102,21 @@ export default function TableReports({ data }: Props) {
                                 </td>
 
                                 <td>
-                                    <button>
-                                        <MoreHorizontal size={15} />
-                                    </button>
+                                    <div className="flex items-center justify-center gap-3">
+                                        <button
+                                            type="button"
+                                            aria-label={`Lihat detail ${report.laporan}`}
+                                            onClick={() =>
+                                                setSelectedId(report.id)
+                                            }
+                                            className="text-slate-500 hover:text-slate-700"
+                                        >
+                                            <Eye size={15} />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
-                        )
+                        );
                     })}
 
                     {data.length === 0 && (
@@ -113,6 +131,12 @@ export default function TableReports({ data }: Props) {
                     )}
                 </tbody>
             </table>
+
+            <LaporanDetailDrawer
+                id={selectedId}
+                onClose={() => setSelectedId(null)}
+                onChanged={onChanged}
+            />
         </div>
     );
 }

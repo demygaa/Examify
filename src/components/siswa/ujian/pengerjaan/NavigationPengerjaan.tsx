@@ -20,22 +20,22 @@ export default function NavigationBottom() {
 
     return (
         <>
-            <div className="bg-white border-slate-300 border-t px-[15px] grid grid-cols-3 py-4 mt-auto">
+            <div className="bg-white border-slate-300 border-t px-3 sm:px-[15px] grid grid-cols-3 py-3 sm:py-4 mt-auto gap-2">
 
                 <button
-                    className="bg-blue-600 text-white w-fit px-4 py-2 font-semibold rounded-xl"
+                    className="bg-blue-600 text-white w-full sm:w-fit px-3 sm:px-4 py-2 font-semibold rounded-xl text-sm sm:text-base"
                 >
                     Sebelumnya
                 </button>
 
                 <button
-                    className="border border-[#943700] bg-white w-[100px] px-4 py-4 rounded-xl ml-auto mr-auto font-semibold text-[#943700]"
+                    className="border border-[#943700] bg-white w-full sm:w-[100px] px-2 sm:px-4 py-2 sm:py-4 rounded-xl mx-auto font-semibold text-[#943700] text-sm sm:text-base"
                 >
                     Tandai
                 </button>
 
                 <button
-                    className="bg-green-600 text-white w-fit px-4 py-2 font-semibold rounded-xl ml-auto"
+                    className="bg-green-600 text-white w-full sm:w-fit px-3 sm:px-4 py-2 font-semibold rounded-xl ml-auto text-sm sm:text-base"
                     onClick={() => setShowDone(true)}
                 >
                     Selesai

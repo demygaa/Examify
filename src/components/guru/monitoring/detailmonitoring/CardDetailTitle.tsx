@@ -9,10 +9,10 @@ export default function CardDetaiTitle({
     title,
     kelas,
     soal
-} : CardDetailTitleProps) {
+}: CardDetailTitleProps) {
     return (
         <div className="bg-white p-[27px] border border-slate-300 shadow-sm rounded-xl flex flex-row gap-3 items-center w-fit">
-            <File 
+            <File
                 size={45}
                 color="blue"
                 className="bg-blue-100 p-2 rounded-full"
@@ -21,8 +21,11 @@ export default function CardDetaiTitle({
                 <p className="text-black font-semibold text-[20px]">{title}</p>
                 <p className="text-slate-300 font-semibold text-[15px]">Kelas {kelas} • Soal {soal}</p>
             </div>
-            <div>
-                <p className="bg-green-100 text-green-700 px-2 py-1 rounded-xl text-[15px] font-semibold">• Berlangsung</p>
+            <div className="shrink-0">
+               
+                <p className="w-fit whitespace-nowrap bg-green-100 text-green-700 px-2 py-1 rounded-xl text-[15px] font-semibold">
+                    • Berlangsung
+                </p>
             </div>
         </div>
     );

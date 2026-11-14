@@ -1,4 +1,5 @@
 import { prisma } from "@/src/lib/prisma";
+import { writeActivity } from "@/src/lib/activity";
 import { NextResponse } from "next/server";
 import {
     verifyPassword,
@@ -6,6 +7,7 @@ import {
     signToken,
     roleHome,
     TOKEN_NAME,
+    TOKEN_MAX_AGE,
 } from "@/src/lib/auth";
 
 export async function POST(request: Request) {
@@ -28,68 +30,46 @@ export async function POST(request: Request) {
             );
         }
 
-        let user = null;
-        let profile: {
-            nama: string;
-            identifier: string;
-            extra?: string;
-        } | null = null;
-
-        if (role === "SISWA") {
-            const siswa = await prisma.siswa.findUnique({
-                where: { nis: identifier },
-                include: {
-                    user: true,
-                    kelas: true,
-                },
-            });
-
-            if (siswa) {
-                user = siswa.user;
-                profile = {
-                    nama: siswa.nama,
-                    identifier: siswa.nis,
-                    extra: `${siswa.kelas.kelas} ${siswa.kelas.jurusan}`,
-                };
-            }
-        } else if (role === "GURU") {
-            const guru = await prisma.guru.findUnique({
-                where: { nip: identifier },
-                include: { user: true },
-            });
-
-            if (guru) {
-                user = guru.user;
-                profile = {
-                    nama: guru.nama,
-                    identifier: guru.nip,
-                    extra: guru.prodi,
-                };
-            }
-        } else if (role === "ADMIN") {
-            const admin = await prisma.admin.findUnique({
-                where: { username: identifier },
-                include: { user: true },
-            });
-
-            if (admin) {
-                user = admin.user;
-                profile = {
-                    nama: admin.nama,
-                    identifier: admin.username,
-                };
-            }
-        } else {
+        if (!["SISWA", "GURU", "ADMIN"].includes(role)) {
             return NextResponse.json(
-                {
-                    success: false,
-                    message: "Role tidak dikenali",
-                },
+                { success: false, message: "Role tidak dikenali" },
                 { status: 400 }
             );
         }
 
-        if (!user || !profile) {
+        // Satu query ke tabel User, profil diambil lewat relasi
+        const user = await prisma.user.findUnique({
+            where: { username: identifier },
+            include: {
+                siswa: {
+                    include: {
+                        riwayatKelas: {
+                            where: { tahunAjaran: { isActive: true } },
+                            include: {
+                                kelas: { include: { jurusan: true } },
+                            },
+                            take: 1,
+                        },
+                    },
+                },
+                karyawan: {
+                    include: {
+                        mapel: { include: { mapel: true } },
+                    },
+                },
+            },
+        });
+
+        // Role tidak cocok dianggap "tidak ditemukan", supaya siswa
+        // tidak bisa login lewat tab guru (dan sebaliknya)
+        if (!user || user.role !== role) {
+            await writeActivity({
+                eventType: "Login",
+                description: "Login gagal: akun tidak ditemukan",
+                status: "FAILED",
+                actor: identifier,
+            });
+
             return NextResponse.json(
                 {
                     success: false,
@@ -102,20 +82,68 @@ export async function POST(request: Request) {
         const passwordValid = await verifyPassword(password, user.password);
 
         if (!passwordValid) {
+            await writeActivity({
+                eventType: "Login",
+                description: "Login gagal: password salah",
+                status: "FAILED",
+                actor: identifier,
+            });
+
             return NextResponse.json(
-                {
-                    success: false,
-                    message: "Password salah",
-                },
+                { success: false, message: "Password salah" },
                 { status: 401 }
             );
         }
 
-        if (user.role !== role || user.status !== "ACTIVE") {
+        if (user.status !== "ACTIVE") {
+            await writeActivity({
+                eventType: "Login",
+                description: "Login gagal: akun tidak aktif",
+                status: "FAILED",
+                actor: identifier,
+            });
+
+            return NextResponse.json(
+                { success: false, message: "Akun tidak aktif" },
+                { status: 403 }
+            );
+        }
+
+        // Susun profil sesuai role
+        let profile: {
+            nama: string;
+            identifier: string;
+            extra?: string;
+        } | null = null;
+
+        if (role === "SISWA" && user.siswa) {
+            const kelas = user.siswa.riwayatKelas[0]?.kelas;
+
+            profile = {
+                nama: user.siswa.nama,
+                identifier: user.siswa.nis,
+                extra: kelas
+                    ? `${kelas.tingkat} ${kelas.jurusan.nama}`
+                    : undefined,
+            };
+        } else if (role === "GURU" && user.karyawan) {
+            profile = {
+                nama: user.karyawan.nama,
+                identifier: user.karyawan.nip ?? user.username,
+                extra: user.karyawan.mapel.map((m) => m.mapel.nama).join(", "),
+            };
+        } else if (role === "ADMIN" && user.karyawan) {
+            profile = {
+                nama: user.karyawan.nama,
+                identifier: user.username,
+            };
+        }
+
+        if (!profile) {
             return NextResponse.json(
                 {
                     success: false,
-                    message: "Akun tidak aktif atau role tidak sesuai",
+                    message: "Data profil akun belum lengkap",
                 },
                 { status: 403 }
             );
@@ -124,6 +152,13 @@ export async function POST(request: Request) {
         await prisma.user.update({
             where: { id: user.id },
             data: { lastLogin: new Date() },
+        });
+
+        await writeActivity({
+            eventType: "Login",
+            description: `Login berhasil sebagai ${user.role}`,
+            status: "SUCCESS",
+            actor: profile.nama,
         });
 
         const token = signToken({ userId: user.id, role: user.role });
@@ -144,7 +179,7 @@ export async function POST(request: Request) {
         response.cookies.set(TOKEN_NAME, token, {
             httpOnly: true,
             sameSite: "lax",
-            maxAge: 60 * 60 * 24 * 7,
+            maxAge: TOKEN_MAX_AGE,
             path: "/",
         });
 
@@ -153,11 +188,7 @@ export async function POST(request: Request) {
         console.error("ERROR LOGIN:", error);
 
         return NextResponse.json(
-            {
-                success: false,
-                message: "Terjadi kesalahan saat login",
-                error: String(error),
-            },
+            { success: false, message: "Terjadi kesalahan saat login" },
             { status: 500 }
         );
     }

@@ -8,9 +8,7 @@ import { sidebarMenus } from "./SidebarMenu";
 
 type Role = "Siswa" | "Guru" | "Admin";
 
-
-
-export default function Sidebar({ role }: { role: Role }) {
+export default function Sidebar({ role, onClose }: { role: Role; onClose?: () => void }) {
     const menus = sidebarMenus[role];
     const pathname = usePathname();
     const rootPath = `/${role.toLowerCase()}`;
@@ -22,12 +20,13 @@ export default function Sidebar({ role }: { role: Role }) {
             cache: "no-store",
         });
 
+        if (onClose) onClose();
         router.push("/");
         router.refresh();
     }
 
     return (
-        <aside className="flex h-screen w-[290px] shrink-0 flex-col border-r border-slate-200 bg-white fixed">
+        <aside className="flex h-screen w-[290px] shrink-0 flex-col border-r border-slate-200 bg-white lg:fixed">
 
             {/* Logo */}
             <div className="flex h-20 items-center border-b border-slate-200 px-4 gap-5" >
@@ -64,6 +63,7 @@ export default function Sidebar({ role }: { role: Role }) {
                             <Link
                                 key={menu.href}
                                 href={menu.href}
+                                onClick={onClose}
                                 className={`flex items-center text-[15px] gap-3 rounded-lg px-4 py-3 text-sm font-medium transition ${isActive
                                     ? "bg-blue-100 text-blue-700 border-l-4 border-blue-600 rounded-tl-[0px] rounded-bl-[0px]"
                                     : "text-slate-700 hover:bg-slate-100"

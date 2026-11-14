@@ -1,37 +1,27 @@
-import { MoreHorizontal } from "lucide-react";
+import { Eye } from "lucide-react";
 import { useState } from "react";
-import AccountDetailModal from "./AccountDetailModal";
+import AccountDetailDrawer from "./AccountDetailDrawer";
 
 export type Account = {
     id: string;
     nama: string;
-    email: string;
+    username: string;
     role: "Student" | "Teacher" | "Administrator";
     identifier: string;
-    className: string;
+    kelas: string;
     status: "Active" | "Inactive";
     login: string;
+    createdAt: string;
 };
 
 type Props = {
     data: Account[];
+    onChanged?: () => void;
 };
 
-export default function AccountTable({ data }: Props) {
-    const account = {
-        nama: "Ahmad Fauzan",
-        username: "ahmad.fauzan",
-        email: "ahmad@examify.sch.id",
-        role: "Guru",
-        status: "Aktif",
-        nip: "1987654321",
-        mapel: "Matematika",
-        dibuat: "12 Januari 2026",
-        terakhirLogin: "22 September 2026, 08:42",
-    };
+export default function AccountTable({ data, onChanged }: Props) {
+    const [selectedId, setSelectedId] = useState<string | null>(null);
 
-    const [showDetail, setShowDetail] = useState(false);
-    const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
     return (
         <div className="overflow-x-auto px-[10px]">
             <table className="w-full">
@@ -69,7 +59,7 @@ export default function AccountTable({ data }: Props) {
                                         </p>
 
                                         <p className="text-[9px] text-slate-500">
-                                            {account.email}
+                                            @{account.username}
                                         </p>
                                     </div>
                                 </div>
@@ -91,7 +81,7 @@ export default function AccountTable({ data }: Props) {
 
                             <td>{account.identifier}</td>
 
-                            <td>{account.className}</td>
+                            <td>{account.kelas}</td>
 
                             <td>
                                 <span
@@ -109,12 +99,12 @@ export default function AccountTable({ data }: Props) {
 
                             <td>
                                 <button
-                                    onClick={() => {
-                                        setSelectedAccount(account);
-                                        setShowDetail(true);
-                                    }}
+                                    type="button"
+                                    aria-label={`Lihat detail ${account.nama}`}
+                                    onClick={() => setSelectedId(account.id)}
+                                    className="rounded-md p-1 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                 >
-                                    <MoreHorizontal size={15} />
+                                    <Eye size={15} />
                                 </button>
                             </td>
                         </tr>
@@ -132,10 +122,11 @@ export default function AccountTable({ data }: Props) {
                     )}
                 </tbody>
             </table>
-            <AccountDetailModal
-                isOpen={showDetail}
-                onClose={() => setShowDetail(false)}
-                account={selectedAccount}
+
+            <AccountDetailDrawer
+                id={selectedId}
+                onClose={() => setSelectedId(null)}
+                onChanged={onChanged}
             />
         </div>
     );

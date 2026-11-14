@@ -6,17 +6,19 @@ import StartExam from "@/src/components/siswa/ujian/joinexam/StartExam";
 
 export  default function JoinExam() {
     return (
-        <div className="bg-[#F0F1FD] w-screen h-screen">
+        <div className="bg-[#F0F1FD] min-h-screen w-full pb-8">
             <JoinHeader />
 
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center px-4">
                 <div className="text-black">
-                    <p className="text-center text-[20px] font-bold">Konfirmasi Pelaksanaan Ujian</p>
-                    <p className="text-slate-600">Harap periksa kembali detail ujian dan baca peraturan dengan seksama sebelum memulai.</p>
+                    <p className="text-center text-lg sm:text-[20px] font-bold">Konfirmasi Pelaksanaan Ujian</p>
+                    <p className="text-slate-600 text-sm sm:text-base text-center mt-1">Harap periksa kembali detail ujian dan baca peraturan dengan seksama sebelum memulai.</p>
                 </div>
-                <div className="flex flex-row gap-5">
-                    <AlertForm />
-                    <div>
+                <div className="flex flex-col lg:flex-row gap-4 lg:gap-5 w-full max-w-6xl mt-4">
+                    <div className="w-full lg:flex-1">
+                        <AlertForm />
+                    </div>
+                    <div className="w-full lg:w-[280px] flex flex-col">
                         <StartExam />
                         <CustemerServiceCard />
                     </div>

@@ -16,7 +16,7 @@ export default function MonitoringPage() {
                 name="Ahmad"
                 prodi="Matematika"
             />
-            <div className="flex flex-row gap-[20px] w-full mt-[20px]">
+            <div className="mt-4 sm:mt-[20px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-[20px] w-full">
                 <MonitoringStatisticCard
                     title="Ujian Aktif"
                     icon={PlayCircle}
@@ -43,10 +43,10 @@ export default function MonitoringPage() {
                     className="bg-blue-100 text-blue-700 p-2 rounded-full"
                 />
             </div>
-            <div className="mt-[20px]">
+            <div className="mt-4 sm:mt-[20px]">
                 <SearchCard />
             </div>
-            <div className="mt-[20px] grid grid-cols-4 gap-[20px]">
+            <div className="mt-4 sm:mt-[20px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-[20px]">
                 {cardMonitoring.map((card) => (
                     <CardMonitor
                         key={card.id}

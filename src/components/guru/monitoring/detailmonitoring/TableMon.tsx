@@ -16,7 +16,7 @@ export default function TableMon({
 
     return (
         <div>
-            <table className="w-full">
+            <table className="w-full min-w-[520px]">
                 <thead>
                     <tr className="text-slate-500 border-b border-slate-300 py-[15px]">
                         <th className="text-left flex ml-[15px] flex py-[15px]">Nama Peserta</th>

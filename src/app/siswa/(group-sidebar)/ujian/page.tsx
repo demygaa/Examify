@@ -30,7 +30,7 @@ export default function ujian() {
     return (
         <div>
             <HeaderUjian />
-            <div className="flex justify-end">
+            <div className="flex justify-start sm:justify-end mb-4">
                 <FilterTime
                     options={[
                         {
@@ -48,8 +48,8 @@ export default function ujian() {
                     ]}
                 />
             </div>
-            <div className="flex gap-[20px] w-full">
-                <div className="flex w-1/2">
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-[20px] w-full">
+                <div className="flex w-full lg:w-1/2">
                     <ExamToday
                         title="UJIAN HARI INI"
                         jumlah={3}
@@ -57,14 +57,14 @@ export default function ujian() {
                         time="14 Januari"
                     />
                 </div>
-                <div className="flex w-1/2">
+                <div className="flex w-full lg:w-1/2">
                     <ExamPresent
                         present="100%"
                     />
                 </div>
 
             </div>
-            <div className="flex gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
                 {exams.map((exam) => (
                     <ExamifyCard
                         key={exam.id}

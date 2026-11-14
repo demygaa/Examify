@@ -28,9 +28,24 @@ export async function GET() {
         const user = await prisma.user.findUnique({
             where: { id: payload.userId },
             include: {
-                siswa: { include: { kelas: true } },
-                guru: true,
-                admin: true,
+                siswa: {
+                    include: {
+                        // hanya penempatan kelas di tahun ajaran aktif
+                        riwayatKelas: {
+                            where: { tahunAjaran: { isActive: true } },
+                            include: {
+                                kelas: { include: { jurusan: true } },
+                                tahunAjaran: true,
+                            },
+                            take: 1,
+                        },
+                    },
+                },
+                karyawan: {
+                    include: {
+                        mapel: { include: { mapel: true } },
+                    },
+                },
             },
         });
 
@@ -41,31 +56,55 @@ export async function GET() {
             );
         }
 
+        if (user.status !== "ACTIVE") {
+            return NextResponse.json(
+                { success: false, message: "Akun tidak aktif" },
+                { status: 403 }
+            );
+        }
+
         const role = user.role as Role;
 
         let profile: Record<string, unknown> = {};
-        if (user.siswa) {
+
+        if (role === "SISWA" && user.siswa) {
+            const penempatan = user.siswa.riwayatKelas[0];
+            const kelas = penempatan?.kelas;
+
             profile = {
                 id: user.siswa.id,
                 nama: user.siswa.nama,
                 nis: user.siswa.nis,
-                kelas: {
-                    id: user.siswa.kelas.id,
-                    nama: `${user.siswa.kelas.kelas} ${user.siswa.kelas.jurusan}`,
-                },
+                // null kalau siswa belum punya kelas di tahun ajaran aktif
+                kelas: kelas
+                    ? {
+                          id: kelas.id,
+                          kode: kelas.kodeKelas,
+                          nama: `${kelas.tingkat} ${kelas.jurusan.nama}`,
+                      }
+                    : null,
+                tahunAjaran: penempatan?.tahunAjaran.nama ?? null,
             };
-        } else if (user.guru) {
+        } else if (role === "GURU" && user.karyawan) {
+            const daftarMapel = user.karyawan.mapel.map((m) => ({
+                id: m.mapel.id,
+                kode: m.mapel.kode,
+                nama: m.mapel.nama,
+            }));
+
             profile = {
-                id: user.guru.id,
-                nama: user.guru.nama,
-                nip: user.guru.nip,
-                prodi: user.guru.prodi,
+                id: user.karyawan.id,
+                nama: user.karyawan.nama,
+                nip: user.karyawan.nip,
+                // gabungan teks, supaya komponen lama yang memakai "prodi" tetap jalan
+                prodi: daftarMapel.map((m) => m.nama).join(", "),
+                mapel: daftarMapel,
             };
-        } else if (user.admin) {
+        } else if (role === "ADMIN" && user.karyawan) {
             profile = {
-                id: user.admin.id,
-                nama: user.admin.nama,
-                username: user.admin.username,
+                id: user.karyawan.id,
+                nama: user.karyawan.nama,
+                username: user.username,
             };
         }
 
@@ -86,9 +125,8 @@ export async function GET() {
             {
                 success: false,
                 message: "Terjadi kesalahan saat mengambil data user",
-                error: String(error),
             },
             { status: 500 }
         );
     }
-}   
+}

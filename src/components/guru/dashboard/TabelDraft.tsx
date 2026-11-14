@@ -16,10 +16,10 @@ export default function TabelDraft() {
     ]
 
     return (
-        <div className="bg-white shadow-sm p-[27px] mt-[20px] rounded-xl shadow-sm border border-slate-300">
-            <div className="border-b border-slate-400 flex flex-row justify-between mb-[10px]">
-                <p className="text-black font-semibold text-[22px]">Draft Soal</p>
-                <Link href={'/guru/banksoal'} className="text-blue-700 font-semibold">Lihat Semua Draft</Link>
+        <div className="bg-white shadow-sm p-3 sm:p-[27px] mt-4 sm:mt-[20px] rounded-xl shadow-sm border border-slate-300">
+            <div className="border-b border-slate-400 flex flex-col sm:flex-row justify-between mb-3 sm:mb-[10px] gap-2">
+                <p className="text-black font-semibold text-lg sm:text-[22px]">Draft Soal</p>
+                <Link href={'/guru/banksoal'} className="text-blue-700 font-semibold text-sm self-start sm:self-auto">Lihat Semua Draft</Link>
             </div>
             {draftexams.map((draft) => (
                 <DraftSoalDashboard

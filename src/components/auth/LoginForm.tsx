@@ -74,7 +74,7 @@ export default function LoginForm() {
     return (
         <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
 
-            {/* Header */}
+           
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-slate-900">
                     Masuk ke Akun Anda
@@ -85,7 +85,7 @@ export default function LoginForm() {
                 </p>
             </div>
 
-            {/* Pilihan Role */}
+       
             <div className="mb-6">
                 <label className="mb-2 block text-sm font-medium text-slate-700">
                     Masuk sebagai
@@ -115,10 +115,9 @@ export default function LoginForm() {
                 </div>
             </div>
 
-            {/* Form */}
             <form className="space-y-5" onSubmit={handleSubmit}>
 
-                {/* NIS / NIP */}
+              
                 <div>
                     <label
                         htmlFor="identifier"
@@ -137,7 +136,6 @@ export default function LoginForm() {
                     />
                 </div>
 
-                {/* Password */}
                 <div>
                     <label
                         htmlFor="password"
@@ -170,7 +168,7 @@ export default function LoginForm() {
                     </div>
                 </div>
 
-                {/* Remember Me */}
+            
                 <div className="flex items-center justify-between">
                     <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
                         <input
@@ -184,14 +182,13 @@ export default function LoginForm() {
                     </label>
                 </div>
 
-                {/* Error */}
                 {error && (
                     <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
                         {error}
                     </div>
                 )}
 
-                {/* Button */}
+            
                 <button
                     type="submit"
                     disabled={loading || !identifier || !password}
@@ -201,14 +198,8 @@ export default function LoginForm() {
                     {loading ? "Memproses..." : "Masuk"}
                 </button>
 
-                {/* Link Admin */}
-                <Link
-                    href="/login/admin"
-                    className="flex items-center justify-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-800"
-                >
-                    <ShieldCheck size={16} />
-                    Login sebagai Admin
-                </Link>
+              
+                
 
             </form>
         </div>

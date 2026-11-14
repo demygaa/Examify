@@ -24,7 +24,7 @@ export default function ExamFilter({
     };
 
     return (
-        <div className="flex w-fit items-center gap-3 rounded-xl border border-slate-300 bg-slate-100 p-1.5">
+        <div className="flex w-full sm:w-fit items-center gap-1 sm:gap-3 rounded-xl border border-slate-300 bg-slate-100 p-1 sm:p-1.5 overflow-x-auto">
             {options.map((option) => {
                 const isActive = active === option.value;
 
@@ -32,7 +32,7 @@ export default function ExamFilter({
                     <button
                         key={option.value}
                         onClick={() => handleChange(option.value)}
-                        className={`rounded-lg px-6 py-2.5 text-[15px] font-semibold transition ${
+                        className={`rounded-lg px-4 sm:px-6 py-1.5 sm:py-2.5 text-xs sm:text-[15px] font-semibold transition whitespace-nowrap ${
                             isActive
                                 ? "bg-white text-blue-700 shadow-sm"
                                 : "text-slate-500 hover:text-slate-900"

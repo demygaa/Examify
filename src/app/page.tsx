@@ -7,10 +7,10 @@ export default function LoginPage() {
 
             <div className="mx-auto flex min-h-screen max-w-8xl">
 
-                {/* Kiri */}
+              
                 <LoginBranding />
 
-                {/* Kanan */}
+           
                 <section className="flex w-2/5  items-center justify-center p-8 bg-white shadow-2xl">
                     <LoginForm />
                 </section>

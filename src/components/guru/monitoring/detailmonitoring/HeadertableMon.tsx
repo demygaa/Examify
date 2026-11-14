@@ -1,7 +1,8 @@
 import { RefreshCcw } from "lucide-react";
 export default function HeaderTableMon() {
     return (
-        <div className="flex flex-row justify-between px-[10px] py-[10px] border-b border-slate-300 items-center">
+        <div  className="flex flex-wrap items-center justify-between gap-2 p-4">
+            
             <p className="text-black font-semibold">Daftar Peserta Ujian</p>
             <div className="flex flex-row gap-2 p-2 bg-slate-300 w-fit rounded-xl">
                 <RefreshCcw

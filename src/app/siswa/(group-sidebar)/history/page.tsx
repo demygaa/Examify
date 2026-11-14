@@ -55,16 +55,16 @@ export default function HistoryPage() {
     return (
         <div>
             <HeaderHistory />
-            <div className="flex w-full gap-[30px]">
+            <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-5 lg:gap-[30px]">
                 <StatisticHistory
                     title="Total Ujian Selesai"
                     value="12"
                     icon={CheckCircle}
                 />
 
-                <Link href={"/siswa/history/notdone"} className="w-2/2">
+                <Link href={"/siswa/history/notdone"} className="w-full sm:w-auto">
                     <StatisticHistory
-                        title="Bellum Dikerjakan"
+                        title="Belum Dikerjakan"
                         value="12"
                         icon={ChartBar}
                         className="border-blue-700"

@@ -30,7 +30,7 @@ export default function GuruDashboard() {
                 name="Ahmad"
                 prodi="Matematika"
             />
-            <div className="flex flex-row gap-4 w-full mt-[20px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mt-4 lg:mt-[20px]">
                 <StatisticCardGuru
                     icon={Notebook}
                     status="3 sedang aktif"
@@ -63,8 +63,8 @@ export default function GuruDashboard() {
                 />
             </div>
             
-            <div className="flex flex-row w-full mt-[20px] gap-[20px]">
-                <div className="flex-1">
+            <div className="flex flex-col lg:flex-row w-full gap-4 lg:gap-[20px] mt-4 lg:mt-[20px]">
+                <div className="w-full lg:flex-1">
                     {exams.map((exam) => (
                         <CardExamLive 
                             key={exam.id}
@@ -78,12 +78,11 @@ export default function GuruDashboard() {
                         />
                     ))}
                     <TabelDraft />
-
                     <TabelUjian />
                     
                 </div>
-                <div className="w-[400px] shrink-0">
-                    <p className="text-black font-semibold">Aksi cepat</p>
+                <div className="w-full lg:w-[400px] shrink-0">
+                    <p className="text-black font-semibold text-sm sm:text-base">Aksi cepat</p>
                     <FastAction />
                 </div>
             </div>

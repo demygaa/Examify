@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
     Feather,
     FileUp,
@@ -18,6 +19,7 @@ import AccountTable, {
 } from "@/src/components/admin/kelolaakun/AccountTable";
 import ClassPagination from "@/src/components/admin/masterdata/PageNationClass";
 import AccountForm from "@/src/components/admin/kelolaakun/AccountForm";
+import ImportAccountModal from "@/src/components/admin/kelolaakun/ImportAccountModal";
 
 type AccountTab =
     | "all"
@@ -29,15 +31,24 @@ type Props = {
     users: Account[];
 };
 
+const PAGE_SIZE = 10;
+
 export default function AccountManagement({
     users = [],
 }: Props) {
-    
+
     const [showForm, setShowForm] = useState(false);
+    const [showImport, setShowImport] = useState(false);
     const [page, setPage] = useState(1);
     const [activeTab, setActiveTab] =
         useState<AccountTab>("all");
     const [search, setSearch] = useState("");
+    const [statusFilter, setStatusFilter] = useState<
+        "all" | "Active" | "Inactive"
+    >("all");
+    const [classFilter, setClassFilter] = useState("all");
+
+    const router = useRouter();
 
     const filteredAccounts = users.filter((account) => {
         const matchRole =
@@ -49,15 +60,41 @@ export default function AccountManagement({
             (activeTab === "administrator" &&
                 account.role === "Administrator");
 
+        const matchStatus =
+            statusFilter === "all" ||
+            account.status === statusFilter;
+
+        const matchClass =
+            classFilter === "all" || account.kelas === classFilter;
+
         const keyword = search.toLowerCase();
 
         const matchSearch =
             account.nama.toLowerCase().includes(keyword) ||
-            account.email.toLowerCase().includes(keyword) ||
-            account.identifier.toLowerCase().includes(keyword);
+            account.username.toLowerCase().includes(keyword) ||
+            account.identifier.toLowerCase().includes(keyword) ||
+            account.kelas.toLowerCase().includes(keyword);
 
-        return matchRole && matchSearch;
+        return matchRole && matchStatus && matchClass && matchSearch;
     });
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(filteredAccounts.length / PAGE_SIZE)
+    );
+    const safePage = Math.min(page, totalPages);
+    const pageData = filteredAccounts.slice(
+        (safePage - 1) * PAGE_SIZE,
+        safePage * PAGE_SIZE
+    );
+
+    const classOptions = Array.from(
+        new Set(
+            users
+                .map((user) => user.kelas)
+                .filter((kelas) => kelas && kelas !== "-")
+        )
+    ).sort((a, b) => a.localeCompare(b));
 
     return (
         <div className="flex flex-col gap-[20px]">
@@ -72,6 +109,9 @@ export default function AccountManagement({
                 <div className="grid grid-cols-2 gap-[20px]">
 
                     <button
+                        onClick={() => {
+                            setShowImport(true);
+                        }}
                         className="
                             bg-white
                             text-black
@@ -85,6 +125,8 @@ export default function AccountManagement({
                             font-semibold
                             rounded-xl
                             shadow-sm
+                            hover:bg-slate-50
+                            transition
                         "
                     >
                         <FileUp size={20} />
@@ -92,22 +134,10 @@ export default function AccountManagement({
                     </button>
 
                     <button
-                        onClick={() => setShowForm(true)}
-                        className="
-                            bg-blue-700
-                            text-white
-                            gap-2
-                            flex
-                            flex-row
-                            px-4
-                            py-2
-                            items-center
-                            justify-center
-                            text-[15px]
-                            font-semibold
-                            rounded-xl
-                            shadow-sm
-                        "
+                        onClick={() => {
+                            setShowForm(true);
+                        }}
+                        className="bg-blue-700 flex text-white font-semibold text-center text-[15px] items-center justify-center rounded-xl px-2 py-1 hover:bg-blue-800 transition"
                     >
                         Tambah Akun
                     </button>
@@ -186,25 +216,51 @@ export default function AccountManagement({
                         setSearch(value);
                         setPage(1);
                     }}
+                    status={statusFilter}
+                    onStatusChange={(value) => {
+                        setStatusFilter(value);
+                        setPage(1);
+                    }}
+                    classValue={classFilter}
+                    onClassChange={(value) => {
+                        setClassFilter(value);
+                        setPage(1);
+                    }}
+                    classOptions={classOptions}
                 />
 
                 <AccountTable
-                    data={filteredAccounts}
+                    data={pageData}
+                    onChanged={() => router.refresh()}
                 />
 
                 <ClassPagination
-                    currentPage={page}
-                    totalPages={4}
+                    currentPage={safePage}
+                    totalPages={totalPages}
                     onPageChange={setPage}
+                    totalItems={filteredAccounts.length}
+                    pageSize={PAGE_SIZE}
                 />
 
             </div>
 
 
-            {/* ADD ACCOUNT MODAL */}
+
             {showForm && (
                 <AccountForm
-                    onClose={() => setShowForm(false)}
+                    onClose={() => {
+                        setShowForm(false);
+                    }}
+                    onSuccess={() => router.refresh()}
+                />
+            )}
+
+            {showImport && (
+                <ImportAccountModal
+                    onClose={() => {
+                        setShowImport(false);
+                    }}
+                    onSuccess={() => router.refresh()}
                 />
             )}
 

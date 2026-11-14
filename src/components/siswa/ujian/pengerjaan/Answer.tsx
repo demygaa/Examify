@@ -16,7 +16,7 @@ export default function AnswerOption({
     return (
         <button
             type="button"
-            className={`w-full h-[60px] rounded-xl border-2 px-3 flex items-center gap-3 text-left transition
+            className={`w-full h-[50px] sm:h-[60px] rounded-xl border-2 px-2 sm:px-3 flex items-center gap-2 sm:gap-3 text-left transition
                 ${
                     selected
                         ? "border-blue-600"
@@ -26,7 +26,7 @@ export default function AnswerOption({
         >
             {/* Label A/B/C/D/E */}
             <div
-                className={`w-[30px] h-[30px] rounded-md flex items-center justify-center font-semibold text-sm
+                className={`w-[26px] h-[26px] sm:w-[30px] sm:h-[30px] rounded-md flex items-center justify-center font-semibold text-xs sm:text-sm flex-shrink-0
                     ${
                         selected
                             ? "bg-blue-600 text-white"
@@ -38,15 +38,15 @@ export default function AnswerOption({
             </div>
 
             {/* Jawaban */}
-            <span className="text-[15px] text-slate-700">
+            <span className="text-sm sm:text-[15px] text-slate-700">
                 {answer}
             </span>
 
             {/* Icon ketika dipilih */}
             {selected && (
                 <CheckCircle2
-                    size={21}
-                    className="ml-auto text-blue-600"
+                    size={18}
+                    className="ml-auto text-blue-600 sm:w-[21px] sm:h-[21px]"
                 />
             )}
         </button>

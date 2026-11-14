@@ -46,23 +46,23 @@ export default function TabelUjian() {
     ];
 
     return (
-        <div className="bg-white p-6 mt-5 rounded-xl shadow-sm border border-slate-300 p-[27px]">
-            <div className="border-b border-slate-200 flex flex-row justify-between items-center pb-3 mb-4">
-                <p className="text-black font-semibold text-xl">Jadwal Ujian</p>
-                <Link href="/guru/ujian" className="text-blue-700 font-semibold hover:underline text-sm">
+        <div className="bg-white p-3 sm:p-6 rounded-xl shadow-sm border border-slate-300">
+            <div className="border-b border-slate-200 flex flex-col sm:flex-row sm:justify-between sm:items-center pb-2 sm:pb-3 mb-3 sm:mb-4 gap-2">
+                <p className="text-black font-semibold text-lg sm:text-xl">Jadwal Ujian</p>
+                <Link href="/guru/ujian" className="text-blue-700 font-semibold hover:underline text-sm self-start sm:self-auto">
                     Lihat Semua Ujian
                 </Link>
             </div>
 
-            <div className="overflow-x-auto mt-[20px]">
-                <table className="w-full">
+            <div className="overflow-x-auto -mx-3 sm:mx-0">
+                <table className="w-full min-w-[600px]">
                     <thead>
                         <tr className="text-left text-slate-400 border-b border-slate-200 bg-blue-100">
-                            <th className="p-4 font-semibold">NAMA UJIAN</th>
-                            <th className="p-4 font-semibold">KELAS</th>
-                            <th className="p-4 font-semibold">TANGGAL</th>
-                            <th className="p-4 font-semibold">DURASI</th>
-                            <th className="p-4 font-semibold">STATUS</th>
+                            <th className="p-3 sm:p-4 font-semibold text-xs sm:text-sm">NAMA UJIAN</th>
+                            <th className="p-3 sm:p-4 font-semibold text-xs sm:text-sm">KELAS</th>
+                            <th className="p-3 sm:p-4 font-semibold text-xs sm:text-sm">TANGGAL</th>
+                            <th className="p-3 sm:p-4 font-semibold text-xs sm:text-sm">DURASI</th>
+                            <th className="p-3 sm:p-4 font-semibold text-xs sm:text-sm">STATUS</th>
                         </tr>
                     </thead>
                     <tbody>

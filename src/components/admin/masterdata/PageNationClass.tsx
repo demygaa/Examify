@@ -6,25 +6,43 @@ type ClassPaginationProps = {
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
+    totalItems?: number;
+    pageSize?: number;
 };
 
 export default function ClassPagination({
     currentPage,
     totalPages,
     onPageChange,
+    totalItems,
+    pageSize = 10,
 }: ClassPaginationProps) {
+    const from =
+        totalItems === undefined
+            ? 0
+            : totalItems === 0
+              ? 0
+              : (currentPage - 1) * pageSize + 1;
+    const to =
+        totalItems === undefined
+            ? 0
+            : Math.min(currentPage * pageSize, totalItems);
+
     return (
         <div className="flex items-center justify-between border-t border-slate-200 p-3">
 
-            <p className="text-sm text-slate-600">
-                Showing 1 to 10 of 32 entries
-            </p>
+            {totalItems !== undefined && (
+                <p className="text-sm text-slate-600">
+                    Showing {from} to {to} of {totalItems} entries
+                </p>
+            )}
 
-            <div className="flex items-center gap-1">
+            <div className="ml-auto flex items-center gap-1">
 
                 {/* Previous */}
                 <button
-                    disabled={currentPage === 1}
+                    type="button"
+                    disabled={currentPage <= 1}
                     onClick={() => onPageChange(currentPage - 1)}
                     className="rounded-lg border border-slate-300 p-2 disabled:opacity-40"
                 >
@@ -37,6 +55,7 @@ export default function ClassPagination({
                     (_, index) => index + 1
                 ).map((page) => (
                     <button
+                        type="button"
                         key={page}
                         onClick={() => onPageChange(page)}
                         className={`h-8 w-8 rounded-lg text-sm ${
@@ -51,7 +70,8 @@ export default function ClassPagination({
 
                 {/* Next */}
                 <button
-                    disabled={currentPage === totalPages}
+                    type="button"
+                    disabled={currentPage >= totalPages}
                     onClick={() => onPageChange(currentPage + 1)}
                     className="rounded-lg border border-slate-300 p-2 disabled:opacity-40"
                 >
